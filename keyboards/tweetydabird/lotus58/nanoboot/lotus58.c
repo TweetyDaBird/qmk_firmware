@@ -57,15 +57,3 @@ static void print_status_narrow(void) {
 	oled_write_P(PSTR("\n"), false);
 	
 }
-
-bool oled_task_kb(void) {
-	// Render the OLED
-	if (is_keyboard_master()) {
-		//print_status_narrow();
-		render_logo();
-    } else {
-		//print_status_narrow();
-        render_logo();
-    }
-	return false;
-}
