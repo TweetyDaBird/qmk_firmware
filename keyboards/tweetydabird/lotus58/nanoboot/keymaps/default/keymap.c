@@ -65,10 +65,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 
 // This function allows switching to the 'hidden' layer. DO NOT EDIT!
 layer_state_t layer_state_set_user(layer_state_t state) {
-   state = update_tri_layer_state(state, 1, 2, 3);
-   state = layer_state_set_user(state);
-   
-   return state;
+   return update_tri_layer_state(state, 1, 2, 3);
 }
 
 // Rotate OLED to fit vertical placement. DO NOT EDIT!
