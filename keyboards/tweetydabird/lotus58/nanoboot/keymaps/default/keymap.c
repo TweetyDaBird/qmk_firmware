@@ -91,8 +91,8 @@ static void print_status_narrow(void) {
 	// Create OLED content
     oled_write_P(PSTR("\n"), false);
 	oled_write_P(PSTR(""), false);
-    oled_write_P(PSTR("Lotus -58-"), false);
-	oled_write_P(PSTR("\n"), false);
+    oled_write_P(PSTR("Lotus  58 Glow"), false);
+	oled_write_P(PSTR("\n\n"), false);
 
     // Print current layer
     oled_write_P(PSTR("Layer"), false);
@@ -116,17 +116,17 @@ static void print_status_narrow(void) {
 	// Display autoshift
     oled_write_P(PSTR("\n"), false);
     led_t led_usb_state = host_keyboard_led_state();
-    oled_write_ln_P(PSTR("Caps- lock"), led_usb_state.caps_lock);
+    oled_write_ln_P(PSTR("CAPSL"), led_usb_state.caps_lock);
 	bool autoshift = get_autoshift_state();
 	oled_write_P(PSTR("\n"), false);
-	oled_write_P(PSTR("Auto-Shift"), autoshift);
+	oled_write_P(PSTR("SHIFT"), autoshift);
 	oled_write_P(PSTR("\n"), false);
 	
 }
 
 bool oled_task_user(void) {
 	// Render the OLED
-	if (is_keyboard_master()) {
+	if (is_keyboard_left()) {
 		//print_status_narrow();
 		render_logo();
     } else {
