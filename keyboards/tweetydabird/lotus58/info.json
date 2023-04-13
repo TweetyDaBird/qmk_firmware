@@ -22,13 +22,13 @@
     "features": {
         "bootmagic": true,
         "command": false,
-        "console": false,
+        "console": true,
         "encoder": true,
         "extrakey": true,
         "mousekey": true,
         "nkro": true,
         "oled": true,
-        "rgblight": true,
+        "rgblight": false,
         "split": true,
 	"tri_layer": true
     },
