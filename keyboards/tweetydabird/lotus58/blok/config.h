@@ -1,4 +1,5 @@
 #define I2C_DRIVER I2CD0
+//using raw pin values, blok converter doesn't catch this
 #define I2C0_SDA_PIN 17U
 #define I2C0_SCL_PIN 16U
 #define I2C0_CLOCK_SPEED  400000
