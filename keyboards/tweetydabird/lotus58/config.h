@@ -11,4 +11,5 @@
 #define SPLIT_HAND_PIN B5
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_LED_STATE_ENABLE
-#define SPLIT_OLED_ENABLE
+//Uncommented to prevent a 1-OLED-on-slave-side setup from trying to sync OLED status to master (with no OLED)
+//#define SPLIT_OLED_ENABLE
