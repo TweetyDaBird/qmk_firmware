@@ -1,0 +1,14 @@
+{
+    "keyboard_name": "Little Big Scroll 4",
+    "manufacturer": "Tweetys Wild Thinking",
+    "url": "https://lectronz.com/stores/tweetys-wild-thinking",
+    "maintainer": "TweetyDaBird",
+    "features": {
+        "bootmagic": true,
+        "extrakey": true,
+        "mousekey": false,
+        "nkro": false,
+        "rgblight": true,
+        "encoder": true
+    }
+}
