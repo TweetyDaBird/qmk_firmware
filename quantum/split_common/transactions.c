@@ -73,16 +73,13 @@
 
 #define sizeof_member(type, member) sizeof(((type *)NULL)->member)
 
-#define trans_initiator2target_initializer_cb(member, cb) \
-    { sizeof_member(split_shared_memory_t, member), offsetof(split_shared_memory_t, member), 0, 0, cb }
+#define trans_initiator2target_initializer_cb(member, cb) {sizeof_member(split_shared_memory_t, member), offsetof(split_shared_memory_t, member), 0, 0, cb}
 #define trans_initiator2target_initializer(member) trans_initiator2target_initializer_cb(member, NULL)
 
-#define trans_target2initiator_initializer_cb(member, cb) \
-    { 0, 0, sizeof_member(split_shared_memory_t, member), offsetof(split_shared_memory_t, member), cb }
+#define trans_target2initiator_initializer_cb(member, cb) {0, 0, sizeof_member(split_shared_memory_t, member), offsetof(split_shared_memory_t, member), cb}
 #define trans_target2initiator_initializer(member) trans_target2initiator_initializer_cb(member, NULL)
 
-#define trans_initiator2target_cb(cb) \
-    { 0, 0, 0, 0, cb }
+#define trans_initiator2target_cb(cb) {0, 0, 0, 0, cb}
 
 #define transport_write(id, data, length) transport_execute_transaction(id, data, length, NULL, 0)
 #define transport_read(id, data, length) transport_execute_transaction(id, NULL, 0, data, length)
@@ -419,6 +416,10 @@ static bool mods_handlers_master(matrix_row_t master_matrix[], matrix_row_t slav
     if (!mods_need_sync && new_mods.oneshot_mods != split_shmem->mods.oneshot_mods) {
         mods_need_sync = true;
     }
+    new_mods.oneshot_locked_mods = get_oneshot_locked_mods();
+    if (!mods_need_sync && new_mods.oneshot_locked_mods != split_shmem->mods.oneshot_locked_mods) {
+        mods_need_sync = true;
+    }
 #    endif // NO_ACTION_ONESHOT
 
     bool okay = true;
@@ -442,6 +443,7 @@ static void mods_handlers_slave(matrix_row_t master_matrix[], matrix_row_t slave
     set_weak_mods(mods.weak_mods);
 #    ifndef NO_ACTION_ONESHOT
     set_oneshot_mods(mods.oneshot_mods);
+    set_oneshot_locked_mods(mods.oneshot_locked_mods);
 #    endif
 }
 
@@ -728,7 +730,7 @@ static bool pointing_handlers_master(matrix_row_t master_matrix[], matrix_row_t 
     return okay;
 }
 
-extern const pointing_device_driver_t pointing_device_driver;
+extern const pointing_device_driver_t *pointing_device_driver;
 
 static void pointing_handlers_slave(matrix_row_t master_matrix[], matrix_row_t slave_matrix[]) {
 #    if defined(POINTING_DEVICE_LEFT)
@@ -748,18 +750,18 @@ static void pointing_handlers_slave(matrix_row_t master_matrix[], matrix_row_t s
     last_exec = timer_read32();
 #    endif
 
-    uint16_t temp_cpi = !pointing_device_driver.get_cpi ? 0 : pointing_device_driver.get_cpi(); // check for NULL
+    uint16_t temp_cpi = !pointing_device_driver->get_cpi ? 0 : pointing_device_driver->get_cpi(); // check for NULL
 
     split_shared_memory_lock();
     split_slave_pointing_sync_t pointing;
     memcpy(&pointing, &split_shmem->pointing, sizeof(split_slave_pointing_sync_t));
     split_shared_memory_unlock();
 
-    if (pointing.cpi && pointing.cpi != temp_cpi && pointing_device_driver.set_cpi) {
-        pointing_device_driver.set_cpi(pointing.cpi);
+    if (pointing.cpi && pointing.cpi != temp_cpi && pointing_device_driver->set_cpi) {
+        pointing_device_driver->set_cpi(pointing.cpi);
     }
 
-    pointing.report = pointing_device_driver.get_report((report_mouse_t){0});
+    pointing.report = pointing_device_driver->get_report((report_mouse_t){0});
     // Now update the checksum given that the pointing has been written to
     pointing.checksum = crc8(&pointing.report, sizeof(report_mouse_t));
 
