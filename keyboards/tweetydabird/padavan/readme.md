@@ -4,9 +4,9 @@
 
 *A short description of the keyboard/project*
 
-* Keyboard Maintainer: [TweetyDaBird](https://github.com/Tweety's Wild Thinking)
-* Hardware Supported: *The PCBs, controllers supported*
-* Hardware Availability: *Links to where you can find this hardware*
+* Keyboard Maintainer: [TweetyDaBird](https://github.com/TweetyDaBird)
+* Hardware Supported: Supports ProMicro compatible controllers (RP2040 MCU used by default firmware)
+* Hardware Availability: [Padavan/Vanapad PCB](https://lectronz.com/products/padavan-vanapad-ortho)
 
 Make example for this keyboard (after setting up your build environment):
 
